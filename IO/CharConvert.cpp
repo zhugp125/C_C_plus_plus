@@ -6,7 +6,11 @@
 
 #include <iostream>
 #include <locale>
+#include <boost/locale.hpp>
 using namespace std;
+
+//comple - link
+//g++ CharConvert.cpp -L/usr/local/lib -lboost_locale -I/usr/local/include
 
 std::wstring sToWs(const std::string &str)
 {
@@ -42,9 +46,25 @@ int main()
 {
     std::string str("中国");
     std::wcout << sToWs(str) << std::endl;
-    
+
+#ifdef _WIN32
+    std::wcout.imbue(std::locale("chs"));
+#else
+    std::wcout.imbue(std::locale("zh_CN"));
+#endif
+
     std::wstring wstr(L"你好");
     std::cout << wsToS(wstr) << std::endl;
+    
+    std::cout << "*****************************" << std::endl;
+    std::wstring wtmp1 = L"中国，你好";
+    std::string tmp1 = "中国，你好";
+
+    std::wstring wtmp2 = boost::locale::conv::to_utf<wchar_t>(tmp1, "UTF-8");
+    std::string tmp2 = boost::locale::conv::from_utf<wchar_t>(wtmp1, "UTF-8");
+
+    std::wcout << wtmp2 << std::endl;
+    std::cout << tmp2 << std::endl;
 
     return 0;
 }
