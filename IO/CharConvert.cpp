@@ -7,6 +7,7 @@
 #include <iostream>
 #include <locale>
 #include <boost/locale.hpp>
+#include <QString>
 using namespace std;
 
 //comple - link
@@ -42,6 +43,16 @@ std::string wsToS(const std::wstring &wstr)
     return str;
 }
 
+std::wstring sToWs_Qt(const std::string &str)
+{
+    return QString::fromStdString(str).toStdWString();
+}
+
+std::string wsToS_Qt(const std::wstring &wstr)
+{
+    return QString::fromStdWString(wstr).toStdString();
+}
+
 int main()
 {
     std::string str("中国");
@@ -65,6 +76,10 @@ int main()
 
     std::wcout << wtmp2 << std::endl;
     std::cout << tmp2 << std::endl;
+
+    std::cout << "*****************************" << std::endl;
+    std::wcout << sToWs_Qt(tmp1) << std::endl;
+    std::cout << wsToS_Qt(wtmp1) << std::endl;
 
     return 0;
 }
