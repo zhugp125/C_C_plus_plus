@@ -4,11 +4,20 @@
 	> Created Time: 日  5/ 6 10:57:13 2018
  ************************************************************************/
 
+ #define QT
+ 
 #include <iostream>
+#include <string>
 #include <locale>
 #include <boost/locale.hpp>
+
+#ifdef QT
 #include <QString>
-using namespace std;
+#endif
+
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 //comple - link
 //g++ CharConvert.cpp -L/usr/local/lib -lboost_locale -I/usr/local/include
@@ -43,6 +52,7 @@ std::string wsToS(const std::wstring &wstr)
     return str;
 }
 
+#ifdef QT
 std::wstring sToWs_Qt(const std::string &str)
 {
     return QString::fromStdString(str).toStdWString();
@@ -52,6 +62,59 @@ std::string wsToS_Qt(const std::wstring &wstr)
 {
     return QString::fromStdWString(wstr).toStdString();
 }
+#endif
+
+#ifdef _WIN32
+std::wstring sTows_w(const std::string &str)
+{
+    int nLen = str.size();
+    int nSize = MultiByteToWideChar(CP_ACP, 0, (LPCSTR)str.c_str(), nLen, 0, 0);
+    if (nSize <= 0)
+        return NULL;
+
+    WCHAR* pwch = new WCHAR[nSize + 1];
+    if (NULL == pwch)
+        return NULL;
+
+    MultiByteToWideChar(CP_ACP, 0, (LPCSTR)str.c_str(), nLen, pwch, nSize);
+    pwch[nSize] = 0;
+
+    if (pwch[0] == 0xfeff)
+    {
+        for (int i = 0; i < nSize; ++i)
+            pwch[i] = pwch[i + 1];
+    }
+
+    std::wstring wstr(pwch);
+    delete[]pwch;
+
+    return wstr;
+}
+
+std::string wsToS_w(const std::wstring &wstr)
+{
+    int nLen = WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)wstr.c_str(), -1, NULL, 0, NULL, NULL);
+    if (nLen <= 0)
+    {
+        return "";
+    }
+
+    char* pch = new char[nLen];
+    if (NULL == pch)
+    {
+        return "";
+    }
+
+    WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)wstr.c_str(), -1, (LPSTR)pch, nLen, NULL, NULL);
+    pch[nLen - 1] = 0;
+
+    std::string str(pch);
+    delete []pch;
+
+    return str;
+}
+
+#endif
 
 int main()
 {
@@ -77,9 +140,16 @@ int main()
     std::wcout << wtmp2 << std::endl;
     std::cout << tmp2 << std::endl;
 
+#ifdef QT
     std::cout << "*****************************" << std::endl;
     std::wcout << sToWs_Qt(tmp1) << std::endl;
     std::cout << wsToS_Qt(wtmp1) << std::endl;
+#endif
+
+#ifdef _WIN32
+    std::wcout << sTows_w(tmp1) << std::endl;
+    std::cout << wsToS_w(wtmp1) << std::endl;
+#endif
 
     return 0;
 }
