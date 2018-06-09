@@ -456,6 +456,7 @@ bool read_tinyxml2(const char* file)
             }
         }
     }
+    return true;
 }
 
 // test
@@ -522,24 +523,24 @@ int main()
 
     const char* file = "test.xml";
 
-
     initVec();
 
+    /*
     {
         timer t;
-        //write_tinyxml(file);
+        write_tinyxml(file);
         cout << "tinyxml write xml file time: " << t.elapsed() << "s\n";
     }
 
     {
         timer t;
-        //write_tinyxml2(file);
+        write_tinyxml2(file);
         cout << "tinyxml2 write xml file time: " << t.elapsed() << "s\n";
     }
 
     {
         timer t;
-        //write_qtxml(file);
+        write_qtxml(file);
         cout << "qt write xml file time: " << t.elapsed() << "s\n";
     }
 
@@ -560,6 +561,8 @@ int main()
         read_qtxml(file);
         cout << "qt xml read xml file time: " << t.elapsed() << "s\n";
     }
+    */
+
     cout << "Hello World!" << endl;
     return 0;
 }
