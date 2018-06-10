@@ -111,6 +111,34 @@ void IniParser::setValue(const std::string &section, const std::string &key, con
     m_data[section][key] = value;
 }
 
+bool IniParser::remove(const std::string &section)
+{
+    auto it = m_data.find(section);
+    if (it != m_data.end())
+    {
+        m_data.erase(it);
+        return true;
+    }
+    return false;
+}
+
+bool IniParser::remove(const std::string &section, const std::string &key)
+{
+    using namespace std;
+    auto it = m_data.find(section);
+    if (it != m_data.end())
+    {
+        auto &data = it->second;
+        auto mapIt = data.find(key);
+        if (mapIt != data.end())
+        {
+            data.erase(mapIt);
+            return true;
+        }
+    }
+    return false;
+}
+
 void IniParser::beginGroup(const std::string &section)
 {
     m_section = section;

@@ -7,7 +7,6 @@ int main()
 {
     IniParser parser("config.ini");
 
-    /*
     parser.beginGroup("login");
     parser.setValue("user", "zhugp");
     parser.setValue("password", "123456");
@@ -22,10 +21,13 @@ int main()
     parser.setValue("download", "1024k");
 
     parser.save();
-    */
 
     cout << parser.getValue("user", "no user") << endl;
     cout << parser.getValue("login", "user", "no user") << endl;
+
+    parser.remove("server");
+    parser.remove("login", "password");
+    parser.save();
 
     cout << "Hello World!" << endl;
     return 0;

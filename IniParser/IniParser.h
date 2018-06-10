@@ -18,6 +18,9 @@ public:
     void setValue(const std::string &key, const std::string &value);
     void setValue(const std::string &section, const std::string &key, const std::string &value);
 
+    bool remove(const std::string &section);
+    bool remove(const std::string &section, const std::string &key);
+
     void beginGroup(const std::string &section);
     void endGroup();
 
