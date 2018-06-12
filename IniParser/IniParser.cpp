@@ -1,6 +1,7 @@
 #include "IniParser.h"
 #include "TrimString.h"
 #include <fstream>
+#include <iostream>
 
 IniParser::IniParser(const std::string &file)
     : m_file(file)
@@ -156,15 +157,25 @@ bool readFile(const std::string &file, std::string &str)
         return false;
     }
 
-    std::ifstream f(file);
-    bool ok = f.is_open();
-    if (ok)
+    FILE* f = fopen(file.c_str(), "r");
+    if (NULL == f)
     {
-        str = std::string((std::istreambuf_iterator<char>(f)),
-                           std::istreambuf_iterator<char>());
+        return false;
     }
 
-    return ok;
+    fseek(f, 0L, SEEK_END);
+    long size = ftell(f);
+    fseek(f, 0L, SEEK_SET);
+
+    char* ch = (char *)malloc(size + 1);
+    int ret = fread(ch, 1, size + 1, f);
+
+    fclose(f);
+
+    str = std::move(ch);
+
+    free(ch);
+    return ret >= 0;
 }
 
 bool writeFile(const std::string &file, std::string &str)
@@ -174,11 +185,13 @@ bool writeFile(const std::string &file, std::string &str)
         return false;
     }
 
-    std::ofstream f(file);
-    bool ok = f.is_open();
-    if (ok)
+    FILE* f = fopen(file.c_str(), "w");
+    if (NULL == f)
     {
-        f << str;
+        return false;
     }
-    return ok;
+
+    int ret = fwrite(str.c_str(), 1, str.size(), f);
+    fclose(f);
+    return ret >= 0;
 }
