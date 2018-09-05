@@ -12,7 +12,7 @@ FileServer::FileServer(io_service &io)
 void FileServer::start()
 {
     sock_pt sock(new ip::tcp::socket(m_ios));
-    m_acceptor.async_accept(*sock, bind(&FileServer::accept_handle, this, placeholdes::error, sock));
+    m_acceptor.async_accept(*sock, bind(&FileServer::accept_handle, this, placeholders::error, sock));
 }
 
 void FileServer::accept_handle(const system::error_code &ec, FileServer::sock_pt sock)
