@@ -9,18 +9,21 @@ using namespace boost::asio;
 
 class FileServer
 {
+    typedef shared_ptr<ip::tcp::socket> sock_pt;
 public:
     FileServer(io_service &io);
 
 protected:
     void start();
-    void accept_handle(const system::error_code &ec, sock_pt sock);
+    void accept_handle(const system::error_code &ec);
     void write_handle(const system::error_code &ec);
+    void read_handle(const system::error_code &ec);
 
 private:
     io_service &m_ios;
     ip::tcp::acceptor m_acceptor;
-    typedef shared_ptr<ip::tcp::socket> sock_pt;
+    sock_pt m_sock;
+    std::string m_fileName;
 };
 
 #endif // FILESERVER_H

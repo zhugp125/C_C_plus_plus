@@ -5,8 +5,18 @@ CONFIG -= qt
 
 INCLUDEPATH += /usr/local/include
 
+LIBS += /usr/local/lib/libboost_filesystem.a
+LIBS += /usr/local/lib/libboost_system.a
+
 SOURCES += main.cpp \
-    FileServer.cpp
+    FileServer.cpp \
+    ../common/md5/md5.cpp \
+    ../common/jsoncpp/jsoncpp.cpp \
+    ../common/common.cpp
 
 HEADERS += \
-    FileServer.h
+    FileServer.h \
+    ../common/md5/md5.h \
+    ../common/jsoncpp/json/json.h \
+    ../common/jsoncpp/json/json-forwards.h \
+    ../common/common.h
