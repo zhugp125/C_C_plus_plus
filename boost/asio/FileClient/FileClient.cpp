@@ -12,7 +12,7 @@ FileClient::FileClient(io_service &ios)
 void FileClient::start()
 {
     sock_pt sock(new ip::tcp::socket(m_ios));
-    sock->async_connect(m_ep, bind(&FileClient::conn_handle, this, placeholdes::error, sock));
+    sock->async_connect(m_ep, bind(&FileClient::conn_handle, this, placeholders::error, sock));
 }
 
 void FileClient::conn_handle(const system::error_code &ec, FileClient::sock_pt sock)
