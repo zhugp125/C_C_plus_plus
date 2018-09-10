@@ -1,8 +1,100 @@
 #include "common.h"
 #include "md5/md5.h"
-#include "jsoncpp/json/json.h"
 #include <fstream>
+#include <sstream>
+#include <string>
 #include <boost/filesystem.hpp>
+
+#define BUF_SIZE 1024
+
+MessageInfo::MessageInfo(const std::string &str)
+{
+    if (!str.empty())
+    {
+        Json::CharReaderBuilder bulider;
+        Json::CharReader * reader = bulider.newCharReader();
+        const char* s = str.c_str();
+        std::string err;
+        if (NULL != reader && reader->parse(s, s + str.size(), &m_root, &err))
+        {
+            std::cout << "parse success" << std::endl;
+        }
+    }
+}
+
+MessageInfo::~MessageInfo()
+{
+
+}
+
+MsgType MessageInfo::getHeader()
+{
+    MsgType _type = MT_NONE;
+    if (!m_root[g_type].isNull())
+    {
+        _type = (MsgType)(m_root[g_type].asInt());
+    }
+    return _type;
+}
+
+std::string MessageInfo::getFileName()
+{
+    std::string fileName;
+    if (!m_root[g_file].isNull())
+    {
+        fileName = m_root[g_file].asString();
+    }
+    return fileName;
+}
+
+std::string MessageInfo::getFileMd5()
+{
+    std::string fileMd5;
+    if (!m_root[g_md5].isNull())
+    {
+        fileMd5 = m_root[g_md5].asString();
+    }
+    return fileMd5;
+}
+
+std::string MessageInfo::getMsg()
+{
+    std::string text;
+    if (!m_root[g_text].isNull())
+    {
+        text = m_root[g_text].asString();
+    }
+    return text;
+}
+
+uint16_t MessageInfo::getFileSize()
+{
+    uint16_t size = 0;
+    if (!m_root[g_size].isNull())
+    {
+        size = m_root[g_size].asUInt64();
+    }
+    return size;
+}
+
+std::string MessageInfo::toString() const
+{
+    std::string str;
+    if (m_root.isNull() || m_root.empty())
+    {
+        return str;
+    }
+
+    Json::StreamWriterBuilder bulider;
+    Json::StreamWriter* writer = bulider.newStreamWriter();
+    if (NULL != writer)
+    {
+        std::ostringstream os;
+        writer->write(m_root, &os);
+        str = os.str();
+    }
+    return str;
+}
 
 std::string readFile(const std::string &fileName)
 {
@@ -16,95 +108,6 @@ std::string getFileMd5(const std::string &fileName)
     return md5.md5();
 }
 
-MessageInfo::MessageInfo(const std::string &str)
-    : m_type(MT_Header)
-    , m_fileSize(0)
-    , m_write(NULL)
-{
-    Json::Reader reader;
-    Json::Value root;
-    if (reader.parse(str, root))
-    {
-        if (root.isMember("type"))
-        {
-            m_type = (MsgType)(root["type"].asInt());
-        }
-
-        if (root.isMember("file"))
-        {
-            m_fileName = root["file"].asString();
-        }
-
-        if (root.isMember("md5"))
-        {
-            m_fileMd5 = root["md5"].asString();
-        }
-
-        if (root.isMember("msg"))
-        {
-            m_msg = root["msg"].asString();
-        }
-
-        if (root.isMember("size"))
-        {
-            m_fileSize = root["size"].asInt();
-        }
-    }
-}
-
-MessageInfo::~MessageInfo()
-{
-    if (NULL != m_write)
-    {
-        delete m_write;
-        m_write = NULL;
-    }
-}
-
-bool MessageInfo::isHeader()
-{
-    return m_type == MT_Header;
-}
-
-std::string MessageInfo::getFileName()
-{
-    return m_fileName;
-}
-
-std::string MessageInfo::getFileMd5()
-{
-    return m_fileMd5;
-}
-
-std::string MessageInfo::getMsg()
-{
-    return m_msg;
-}
-
-uint16_t MessageInfo::getFileSize()
-{
-    return m_fileSize;
-}
-
-std::string MessageInfo::toString()
-{
-    if (m_write != NULL)
-    {
-        m_write->asString();
-    }
-    return "";
-}
-
-template<typename Key, typename Value>
-void MessageInfo::insert(const Key &key, const Value &value)
-{
-    if (NULL == m_write)
-    {
-        m_write = new Json::Value;
-    }
-    m_write[key] = value;
-}
-
 std::string getFileName(const std::string &fileName)
 {
     boost::filesystem::path path(fileName);
@@ -115,4 +118,17 @@ long long getFileSize(const std::string &fileName)
 {
     boost::filesystem::path path(fileName);
     return boost::filesystem::file_size(path);
+}
+
+void readFileBySize(const std::string &fileName)
+{
+    std::ifstream f(fileName);
+    size_t size = 0;
+    do
+    {
+        char buf[BUF_SIZE] = {0};
+        f.read(buf, BUF_SIZE);
+        size = strlen(buf);
+        std::cout << size << std::endl;
+    }while(size != 0);
 }
