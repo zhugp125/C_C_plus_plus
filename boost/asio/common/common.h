@@ -18,6 +18,9 @@ const std::string g_size = "size";
 const std::string g_md5  = "md5";
 const std::string g_text = "text";
 
+const std::string g_begin = "begin";
+const std::string g_end = "end";
+
 class MessageInfo
 {
 public:
