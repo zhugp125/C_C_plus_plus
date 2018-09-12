@@ -73,7 +73,7 @@ void FileServer::read_handle(const system::error_code &ec, vec_char pstr, sock_p
         int ret = 0;
         do
         {
-            char buf[BUF_SIZE];
+            char buf[BUF_SIZE] = {0};
             f.read(buf, BUF_SIZE);
             //std::cout << buf << std::endl;
             ret = sizeof(buf);
