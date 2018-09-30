@@ -3,7 +3,12 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include "jsoncpp/json/json.h"
+
+using namespace std;
+
+typedef vector<char> ByteArray;
 
 enum MsgType
 {
