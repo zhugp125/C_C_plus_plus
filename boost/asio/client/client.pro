@@ -11,4 +11,8 @@ LIBS += /usr/local/lib/libboost_thread.a
 LIBS += /usr/local/lib/libboost_date_time.a
 
 SOURCES += \
-    main.cpp
+    main.cpp \
+    client.cpp
+
+HEADERS += \
+    client.h
