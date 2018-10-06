@@ -1,4 +1,5 @@
 #include "session.h"
+#include <boost/asio/impl/write.hpp>
 
 session::session(io_service &service)
     :m_socket(new ip::tcp::socket(service))
@@ -38,9 +39,9 @@ void session::read_handle(const boost::system::error_code &err)
     if (!err)
     {
         cout << "from client size: " << strlen(m_readMsg) << " data: " << m_readMsg << endl;
-        start();
-
+        // test echo
         sendData(m_readMsg);
+        start();
     }
     else
     {
