@@ -12,7 +12,9 @@ LIBS += /usr/local/lib/libboost_date_time.a
 
 SOURCES += \
     main.cpp \
-    server.cpp
+    server.cpp \
+    session.cpp
 
 HEADERS += \
-    server.h
+    server.h \
+    session.h
