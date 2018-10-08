@@ -8,5 +8,13 @@ INCLUDEPATH += /usr/local/include
 LIBS += /usr/local/lib/libboost_filesystem.a
 LIBS += /usr/local/lib/libboost_system.a
 LIBS += /usr/local/lib/libboost_thread.a
+LIBS += /usr/local/lib/libboost_date_time.a
 
-SOURCES += main.cpp
+SOURCES += \
+    main.cpp \
+    server.cpp \
+    session.cpp
+
+HEADERS += \
+    server.h \
+    session.h
