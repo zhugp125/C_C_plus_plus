@@ -13,11 +13,10 @@ list<int> split(int input)
     {
         while (input > 0)
         {
-            output.push_back(input % 10);
+            output.push_front(input % 10);
             input /= 10;
         }
     }
-    output.reverse();
     return output;
 }
 
