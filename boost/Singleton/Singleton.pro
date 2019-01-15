@@ -7,8 +7,6 @@ OBJECTS_DIR += ./bulider/obj
 
 INCLUDEPATH += /usr/local/include
 
-LIBS += /usr/local/lib/libboost_thread.a
-
 SOURCES += main.cpp
 
 HEADERS += \

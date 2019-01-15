@@ -1,10 +1,10 @@
 Target = Singleton
 cc = g++
-deps = Singleton.hpp
+deps = singleton.hpp
 obj = main.o
 
 $(Target) : $(obj)
-	$(cc) -o $(Target) $(obj) -I/usr/local/include /usr/local/lib/libboost_thread.a
+	$(cc) -o $(Target) $(obj) -I/usr/local/include std=c++11
 
 main.o : main.cpp $(deps)
 	$(cc) -c main.cpp
