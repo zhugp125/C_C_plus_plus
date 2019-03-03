@@ -2,8 +2,8 @@
 #include <map>
 #include <vector>
 #include <cstring>
-#include "tinyxml2/tinyxml2.h"
-#include "tinyxml/tinyxml.h"
+#include <tinyxml2.h>
+#include <tinyxml.h>
 #include <boost/timer.hpp>
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>

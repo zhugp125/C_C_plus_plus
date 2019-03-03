@@ -5,14 +5,7 @@ CONFIG -= app_bundle
 
 INCLUDEPATH += /usr/local/include
 
-SOURCES += main.cpp \
-    tinyxml2/tinyxml2.cpp \
-    tinyxml/tinystr.cpp \
-    tinyxml/tinyxml.cpp \
-    tinyxml/tinyxmlerror.cpp \
-    tinyxml/tinyxmlparser.cpp
+LIBS += /usr/local/lib/libtinyxml.a
+LIBS += /usr/local/lib/libtinyxml2.a
 
-HEADERS += \
-    tinyxml2/tinyxml2.h \
-    tinyxml/tinystr.h \
-    tinyxml/tinyxml.h
+SOURCES += main.cpp
