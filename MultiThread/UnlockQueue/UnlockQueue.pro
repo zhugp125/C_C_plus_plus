@@ -7,3 +7,6 @@ SOURCES += main.cpp
 
 HEADERS += \
     UnlockQueue.hpp
+
+DISTFILES += \
+    ReadMe.txt

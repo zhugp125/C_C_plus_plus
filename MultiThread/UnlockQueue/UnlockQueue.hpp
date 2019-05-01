@@ -10,6 +10,7 @@ public:
     UnlockQueue(unsigned int size);
     virtual ~UnlockQueue();
 
+    /** 初始化内存，需外部调用 */
     bool initialize();
 
     unsigned int put(const unsigned char* buffer, unsigned int len);
@@ -19,21 +20,20 @@ public:
     inline unsigned int length() const { return m_in - m_out; }
 
 private:
+    /** 判读输入整数是不是2的幂 */
     inline bool isPowerOfTwo(unsigned long n) { return (n != 0 && (n & (n - 1)) == 0); }
+    /** 输入整数原整成2的幂，返回整数大于等于输入整数 */
     inline unsigned long roundupPowerOfTwo(unsigned long n);
 
 private:
-    unsigned char* m_buffer;
-    unsigned int   m_size;
-    unsigned int   m_in;
-    unsigned int   m_out;
+    unsigned char* m_buffer = nullptr;
+    unsigned int   m_size = 0;
+    unsigned int   m_in = 0;
+    unsigned int   m_out = 0;
 };
 
 UnlockQueue::UnlockQueue(unsigned int size)
-    : m_buffer(nullptr)
-    , m_size(size)
-    , m_in(0)
-    , m_out(0)
+    : m_size(size)
 {
     if (!isPowerOfTwo(size))
     {
